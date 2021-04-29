@@ -5,7 +5,15 @@ export class AppPage {
     return browser.get(browser.baseUrl);
   }
 
-  async getTitleText(): Promise<string> {
-    return element(by.css('app-root .content span')).getText();
+  async clickButton(symbol: string): Promise<void> {
+    return element(by.css(`calc-button[ng-reflect-value="${symbol}"]`)).firstElementChild.click();
+  }
+
+  async getButtonText(symbol: string): Promise<string> {
+    return element(by.css(`calc-button[ng-reflect-value="${symbol}"]`)).getText();
+  }
+
+  async getDisplayText(): Promise<string> {
+    return element(by.css('calc-app .content calc-display')).getText();
   }
 }
