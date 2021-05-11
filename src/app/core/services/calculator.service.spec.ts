@@ -114,7 +114,7 @@ describe('CalculatorService', () => {
         service.processSymbol('*');
         service.processSymbol('2');
         service.processSymbol('=');
-     });
+      });
 
       expectObservable(service.display$).toBe('-(aabcdd)', { a: '1.5', b: '0', c: DIVISION_BY_ZERO_ERROR, d: '2' });
     });
@@ -129,9 +129,25 @@ describe('CalculatorService', () => {
         service.processSymbol('4');
         service.processSymbol(DECIMAL_SEPARATOR);
         service.processSymbol('5');
-     });
+      });
 
       expectObservable(service.display$).toBe('-(abcd)', { a: '1.5', b: '1.53', c: '1.534', d: '1.5345' });
+    });
+  });
+
+  it('should clear operands and operation', () => {
+    scheduler.run(({expectObservable, cold}) => {
+      cold('-a').subscribe(() => {
+        service.setOperand('1.5');
+        service.processSymbol('3');
+        service.processSymbol(DECIMAL_SEPARATOR);
+        service.processSymbol('4');
+        service.processSymbol(DECIMAL_SEPARATOR);
+        service.processSymbol('5');
+        service.processSymbol('C');
+      });
+
+      expectObservable(service.display$).toBe('-(abcde)', { a: '1.5', b: '1.53', c: '1.534', d: '1.5345', e: '' });
     });
   });
 });

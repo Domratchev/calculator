@@ -13,10 +13,6 @@ describe('workspace-project App', () => {
     expect(await page.getDisplayText()).toEqual('');
   });
 
-  it('should display buttons', async () => {
-    '01234567890.+-*/='.split('').forEach(async symbol => expect(await page.getButtonText(symbol)).toEqual(symbol));
-  });
-
   // it('should display clicked numeric digit', async () => {
   //   await page.clickButton('8');
   //   expect(await page.getDisplayText()).toEqual('8');

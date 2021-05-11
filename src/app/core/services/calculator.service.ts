@@ -9,6 +9,7 @@ type DecimalSeparator = typeof DECIMAL_SEPARATOR;
 type UnaryOperation = '+' | '-';
 type BinaryOperation = '+' | '-' | '*' | '/';
 type AssignmentOperation = '=';
+type OtherOperation = 'C';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +26,7 @@ export class CalculatorService {
     this.display$ = this.displaySubject.asObservable();
   }
 
-  processSymbol(symbol: DecimalDigit | DecimalSeparator | UnaryOperation | BinaryOperation | AssignmentOperation): void {
+  processSymbol(symbol: DecimalDigit | DecimalSeparator | UnaryOperation | BinaryOperation | AssignmentOperation | OtherOperation): void {
     switch (symbol) {
       case '0':
       case '1':
@@ -74,6 +75,13 @@ export class CalculatorService {
       case '=':
         if (this.processAssignmentOperation()) {
           this.displaySubject.next(this.operand0);
+        }
+
+        break;
+
+      case 'C':
+        if (this.processClearOperation()) {
+          this.displaySubject.next(this.operand);
         }
 
         break;
@@ -184,5 +192,13 @@ export class CalculatorService {
     }
 
     return isProcessed;
+  }
+
+  protected processClearOperation(): boolean {
+    this.operand0 = '';
+    this.operand = '';
+    this.operation = undefined;
+
+    return true;
   }
 }
